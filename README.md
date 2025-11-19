@@ -10,7 +10,7 @@
 <a href='https://huggingface.co/papers/TBD'><img src='https://img.shields.io/badge/HF%20Paper-TBD-blue'></a>
 <a href='https://github.com/SNHuan/VR-Bench'><img src='https://img.shields.io/badge/Project-Website-green'></a>
 <a href='https://huggingface.co/datasets/amagipeng/VR-Bench'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow'></a>
-<a href='https://huggingface.co/datasets/HY-Wan/VR-Bench/tree/main'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-model-orange'></a>
+<a href='https://huggingface.co/datasets/HY-Wan/VR-Bench/tree/main'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-orange'></a>
 
 </div>
 

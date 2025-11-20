@@ -7,7 +7,7 @@
 <div align="center" style="font-size: 15pt">
 
 <a href='https://arxiv.org/abs/2511.15065'><img src='https://img.shields.io/badge/Arxiv-2511.15065-purple'></a>
-<a href='https://huggingface.co/papers/TBD'><img src='https://img.shields.io/badge/HF%20Paper-2511.15065-blue'></a>
+<a href='https://huggingface.co/papers/2511.15065'><img src='https://img.shields.io/badge/HF%20Paper-2511.15065-blue'></a>
 <a href='https://imyangc7.github.io/VRBench_Web/'><img src='https://img.shields.io/badge/Project-Website-green'></a>
 <a href='https://huggingface.co/datasets/amagipeng/VR-Bench'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow'></a>
 <a href='https://huggingface.co/datasets/HY-Wan/VR-Bench/tree/main'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-orange'></a>

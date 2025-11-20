@@ -6,8 +6,8 @@
 
 <div align="center" style="font-size: 15pt">
 
-<a href='https://arxiv.org/abs/TBD'><img src='https://img.shields.io/badge/Arxiv-TBD-purple'></a>
-<a href='https://huggingface.co/papers/TBD'><img src='https://img.shields.io/badge/HF%20Paper-TBD-blue'></a>
+<a href='https://arxiv.org/abs/2511.15065'><img src='https://img.shields.io/badge/Arxiv-2511.15065-purple'></a>
+<a href='https://huggingface.co/papers/TBD'><img src='https://img.shields.io/badge/HF%20Paper-2511.15065-blue'></a>
 <a href='https://github.com/SNHuan/VR-Bench'><img src='https://img.shields.io/badge/Project-Website-green'></a>
 <a href='https://huggingface.co/datasets/amagipeng/VR-Bench'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow'></a>
 <a href='https://huggingface.co/datasets/HY-Wan/VR-Bench/tree/main'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-orange'></a>
@@ -236,11 +236,11 @@ See existing game implementations for reference.
 If you use VR-Bench in your research, please cite:
 
 ```bibtex
-@misc{vrbench2025,
-  title={VR-Bench: Visual Reasoning Benchmark for Vision-Language Models},
-  author={VR-Bench Team},
-  year={2025},
-  url={https://github.com/SNHuan/VR-Bench}
+@article{yang2025vrbench,
+      title={Reasoning via Video: The First Evaluation of Video Models' Reasoning Abilities through Maze-Solving Tasks}, 
+      author={Cheng Yang and Haiyuan Wan and Yiran Peng and Xin Cheng and Zhaoyang Yu and Jiayi Zhang and Junchi Yu and Xinlei Yu and Xiawu Zheng and Dongzhan Zhou and Chenglin Wu},
+      journal={arXiv preprint arXiv:2511.15065},
+      year={2025}
 }
 ```
 

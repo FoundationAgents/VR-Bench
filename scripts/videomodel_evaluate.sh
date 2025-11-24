@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # 批量评估生成的视频（自动匹配所有难度）
 # 用法: ./scripts/evaluate.sh
 
@@ -7,9 +7,9 @@ export CUDA_PATH=${CUDA_HOME:-/usr/local/cuda}
 export CPATH=$CUDA_PATH/include:${CPATH}
 export LD_LIBRARY_PATH=$CUDA_PATH/lib64:${LD_LIBRARY_PATH}
 
-NAME=sokoban
-DATASET_DIR=dataset_VR/train/$NAME/4
-OUTPUT_DIR=dataset_VR/train/$NAME/4
+NAME=    #maze name
+DATASET_DIR=dataset_VR/train/$NAME/1
+OUTPUT_DIR=dataset_VR/train/$NAME/1
 RESULT_DIR=eval_results/$NAME
 WORKERS=4
 NUM_SAMPLES=1000
@@ -21,7 +21,7 @@ SEARCH_MARGIN=50       # 模板匹配搜索边距（0=全图搜索，>0=局部�
 USE_GPU=gpu
 
 # 构建Python命令
-CMD="python evaluation/dataset_eval/batch_evaluate.py \
+CMD="python evaluation/videomodel_eval/batch_evaluate.py \
     \"$DATASET_DIR\" \
     \"$OUTPUT_DIR\" \
     \"$RESULT_DIR\" \
@@ -41,4 +41,5 @@ fi
 
 # 执行命令
 eval $CMD
+
 

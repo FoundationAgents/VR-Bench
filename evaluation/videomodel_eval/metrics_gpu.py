@@ -193,7 +193,7 @@ class ExactMatchMetric(BaseMetric):
 
         pr = kwargs.get("pr", 0.0)
         sd = kwargs.get("sd", 0.0)
-        # ���� sd=None ��������� SR<1 ʱ�� 的情况（当 SR<1 时）
+        # 处理 sd=None 的情况（当 SR<1 时）
         if sd is None:
             sd = 0.0
         is_perfect = (pr >= self.pr_threshold) and (abs(sd) <= self.step_threshold)

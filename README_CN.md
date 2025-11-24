@@ -16,37 +16,35 @@
 
 中文文档 | [English](README.md)
 
-VR-Bench 是一个综合性的基准测试框架，用于评估视觉语言模型（VLMs）在空间推理和规划任务上的能力。通过多种益智游戏，它提供统一的数据集生成、评估和分析框架。
+VR-Bench 是一个综合基准，用于通过多种益智游戏评估视觉语言模型（VLMs）在空间推理与规划任务上的表现，提供统一的数据生成、评估与分析框架。
 
 ## 🧩 基准概览
 
-VR-Bench 总览。（A）迷宫类型：VR-Bench 包含五种迷宫——规则迷宫、不规则迷宫、3D 迷宫、Trapfield 和 Sokoban，覆盖 2D 与 3D 场景以及多样的任务结构，提供丰富的空间推理场景。（B）视频推理范式：VR-Bench 采用链式帧推理范式，要求模型对视频逐帧进行推理，从而捕捉顺序视觉推理能力。（C）基准表现：我们在所有迷宫类型上，基于四个核心指标评估主流 VLM 和视频模型，揭示其空间推理能力的差异。（D）附加分析：VR-Bench 还支持对难度泛化、纹理泛化、迷宫类型泛化以及测试时扩展进行评估，以全面衡量模型的鲁棒性与泛化能力。
+VR-Bench 总览：（A）迷宫类型：包含规则/不规则/3D 迷宫、Trapfield、Sokoban，覆盖 2D/3D 场景与多样任务结构，提供丰富的空间推理情境。（B）视频推理范式：采用逐帧链式推理，要求模型输出帧级推断以体现序列化视觉推理。（C）基准表现：在所有迷宫类型上对 VLM 与视频模型进行四个核心指标的评估，凸显空间推理能力差异。（D）附加分析：支持难度、纹理、迷宫类型泛化以及测试时扩展等维度的评估，全面衡量鲁棒性与泛化能力。
 
 ![video reason](./resource/video_reason.svg)
 
-为评估 VTR 任务上的泛化能力并提升在多样迷宫场景中的鲁棒性，我们从两个关键维度进行变化：（1）**难度等级**：通过调整迷宫规模（例如从 5×5 扩展到 7×7）、修改迷宫分支数量以及增加障碍等方式，定义简单、中等和困难三个等级；（2）**迷宫纹理**：基于程序化方法和生成模型，改变迷宫中障碍、路径及其他组件的纹理，使策略暴露于更广泛的视觉分布，从而缓解对干净、合成环境的过拟合。
+为评估 VTR 任务的泛化能力并提升在多样迷宫场景中的鲁棒性，我们在两个维度上做变换：（1）**难度等级**：通过调整迷宫规模（如 5×5 到 7×7）、分支数量与障碍，设置简单/中等/困难；（2）**迷宫纹理**：使用程序化与生成式纹理改变障碍、路径等组件，扩大视觉分布，缓解对干净合成环境的过拟合。
 
 ![variant](./resource/variant.svg)
 
 ## 🎮 支持的游戏
 
-VR-Bench 包含五种不同的益智游戏，每种游戏测试视觉推理的不同方面：
+- **Maze（迷宫）**：网格迷宫中从起点到终点
+- **Sokoban（推箱子）**：推箱到目标且避开墙壁
+- **3D Maze（3D 迷宫）**：多层迷宫，梯子连接楼层
+- **PathFinder（路径查找）**：不规则迷宫中带标记路径点的寻路
+- **TrapField（陷阱场）**：避开陷阱完成导航
 
-- **Maze（迷宫）**：在网格迷宫中从起点导航到终点
-- **Sokoban（推箱子）**：将箱子推到目标位置，同时避开墙壁
-- **3D Maze（3D 迷宫）**：多层迷宫，通过梯子连接不同楼层
-- **PathFinder（路径查找）**：在带有标记路径点的不规则迷宫中寻找路径
-- **TrapField（陷阱场）**：在场地中导航，同时避开陷阱
+## ✨ 核心特性
 
-## 🔑 核心特性
-
-- **程序化生成**：自动生成多样化的关卡，支持可配置的难度
-- **纹理自定义**：通过纹理皮肤支持自定义视觉主题
-- **视频渲染**：生成流畅的解题视频（24 FPS）
-- **VLM 评估**：内置框架支持测试多种 VLM（GPT、Gemini、Qwen 等）
-- **全面指标**：成功率（SR）、路径比率（PR）、移动比率（MR）
-- **并行处理**：多线程生成和评估，提高效率
-- **去重机制**：自动检测和移除重复关卡
+- 程序化生成：多样关卡，难度可配置
+- 纹理自定义：支持自定义视觉主题
+- 视频渲染：24 FPS 流畅解题视频
+- VLM 评估：内置多种 VLM 测试（GPT、Gemini、Qwen 等）
+- 全面指标：SR、PR、MR
+- 并行处理：多线程生成与评估
+- 去重机制：自动检测/移除重复关卡
 
 ## 📋 环境要求
 
@@ -66,26 +64,14 @@ cd VR-Bench
 pip install -r requirements.txt
 ```
 
-### 2. 环境配置
-
-```bash
-# 复制环境变量模板
-cp .env.example .env
-
-# 编辑 .env 文件，配置：
-# - VLM 评估所需的 API 密钥
-# - 数据集路径
-# - CUDA 配置
-```
-
-### 3. 下载数据集
+### 2. 下载数据集
 
 ```bash
 # 从 Hugging Face 下载预生成的数据集
 python dataset_init.py --output-dir ./dataset_VR
 ```
 
-### 4. 生成自定义关卡
+### 3. 生成自定义关卡
 
 ```bash
 # 编辑 config/config.yaml 配置游戏类型和难度
@@ -93,13 +79,39 @@ python dataset_init.py --output-dir ./dataset_VR
 python -m generation.batch_generate config/config.yaml
 ```
 
-### 5. 评估 VLM
+## 🎯 模型评估
+
+### 视频模型（轨迹推理）
 
 ```bash
-# 启动本地 VLM 服务器（可选，用于本地模型）
-bash scripts/start_sglang_server.sh
+# 基于生成视频与 GT 轨迹对比，自动匹配难度
+bash scripts/videomodel_evaluate.sh
 
-# 运行评估
+# 或直接调用
+python evaluation/videomodel_eval/batch_evaluate.py \
+  DATASET_DIR OUTPUT_DIR RESULT_DIR \   # DATASET_DIR=GT 数据集根目录，OUTPUT_DIR=模型输出目录，RESULT_DIR=评估结果目录
+  --threshold 0.05 \
+  --num-samples 1000 \
+  --workers 4 \
+  --fidelity-pixel-threshold 5 \
+  --frame-step 1 \
+  --tracker-type template \
+  --search-margin 50 \
+  --gpu   # 可选
+```
+
+### VLM（规划/动作推理）
+
+1）配置环境：`cp .env.example .env`，填写 API 密钥、数据集路径、CUDA 等。  
+2）（可选，本地模型）启动 VLM 服务：
+
+```bash
+bash scripts/start_sglang_server.sh
+```
+
+3）对数据集结果运行评估：
+
+```bash
 bash scripts/run_vlm_eval.sh
 ```
 
@@ -108,24 +120,12 @@ bash scripts/run_vlm_eval.sh
 ```
 VR-Bench/
 ├── core/                   # 核心框架
-│   ├── schema/             # 统一状态表示
-│   ├── renderer.py         # 基础渲染引擎
-│   ├── texture_handler.py  # 纹理管理
-│   └── game_adapter.py     # 游戏适配器接口
 ├── games/                  # 游戏实现
-│   ├── maze/               # 迷宫游戏
-│   ├── sokoban/            # 推箱子游戏
-│   ├── maze3d/             # 3D 迷宫游戏
-│   ├── pathfinder/         # 路径查找游戏
-│   └── trapfield/          # 陷阱场游戏
 ├── generation/             # 数据集生成
-│   ├── batch_generate.py   # 批量生成工具
-│   └── generate_videos.py  # 视频生成
-├── evaluation/             # VLM 评估
-│   └── vlm_eval/           # 评估框架
-├── config/                 # 配置文件
-│   ├── config.yaml         # 生成配置
-│   └── vlm/                # 评估配置
+├── evaluation/
+│   ├── videomodel_eval/    # 评估视频模型的轨迹推理
+│   └── vlm_eval/           # 评估 VLM 的规划/动作推理
+├── config/                 # 生成与评估配置
 ├── skins/                  # 纹理资源
 └── scripts/                # 实用脚本
 ```
@@ -147,119 +147,75 @@ difficulties:
 python -m generation.batch_generate config/config.yaml
 ```
 
-### 在推箱子游戏上评估
+### 评估视频模型
 
 ```bash
-# 编辑 config/vlm/sokoban_eval.yaml
-# 配置模型和数据集路径
+bash scripts/videomodel_evaluate.sh
+```
 
-# 运行评估
+### 评估 VLM
+
+```bash
 python -m evaluation.vlm_eval.run_vlm_eval config/vlm/sokoban_eval.yaml
 ```
 
 ## 📊 评估指标
 
-- **成功率（SR）**：正确解决关卡的百分比
-- **路径比率（PR）**：从起点开始连续正确动作的比率
-- **移动比率（MR）**：解答是否与参考解完全一致的二值指标
-- **步数统计**：解答中动作的总步数
+### 视频模型指标（videomodel_eval）
+- **PR（Precision Rate）**：重采样后，与 GT 路径距离在阈值内的点占比，衡量轨迹形状贴合度。
+- **SR（Success Rate）**：生成轨迹（推箱子时用箱子轨迹）是否进入目标框，取值 0/1。
+- **SD（Step Deviation）**：路径长度相对超长比例 `len_gen / len_gt - 1`，仅在 SR=1 且非负时有效。
+- **EM（Exact Match）**：在 SR=1 且 PR/|SD| 达到阈值时记为 1，否则 0。
+- **MF（Mask Fidelity）**：背景稳定度 [0,1]；对比采样帧与首帧（遮掉起点/终点/玩家区域）衡量背景变化。
 
-## 🔧 配置说明
+### VLM 指标（vlm_eval）
+- **SR / PR / MR / Step**：成功率、路径正确性、匹配率和步数（由 VLM 评估器定义）。
+
+## 🔧 配置
 
 ### 生成配置（`config/config.yaml`）
-
-- `game_type`：要生成的游戏类型（maze、sokoban、pathfinder、trapfield、maze3d）
+- `game_type`：生成的游戏类型（maze/sokoban/pathfinder/trapfield/maze3d）
 - `skins_root`：纹理资源路径
-- `difficulties`：难度等级及参数
+- `difficulties`：难度等级与参数
 - `generation.max_attempts`：生成有效关卡的最大尝试次数
 - `parallel.max_workers`：并行工作进程数
 
-### 评估配置（`config/vlm/*.yaml`）
-
-- `game`：要评估的游戏类型
+### VLM 评估配置（`config/vlm/*.yaml`）
+- `game`：评估的游戏类型
 - `dataset`：数据集路径
-- `models`：要测试的 VLM 列表
-- `workers`：并行评估工作进程数
+- `models`：待测 VLM 列表
+- `workers`：并行评估进程数
 - `max_levels`：最大评估关卡数（-1 表示全部）
 
 ## 🎨 自定义纹理
 
-每个游戏都支持自定义纹理皮肤：
+1. 在 `skins/<game_name>/` 下创建新文件夹  
+2. 添加所需纹理（PNG/JPG）  
+3. 在配置中指定皮肤路径  
 
-1. 在 `skins/<game_name>/` 下创建新文件夹
-2. 添加所需的纹理图片（PNG/JPG 格式）
-3. 在配置文件中指定皮肤路径
-
-所需纹理文件因游戏而异，请参考现有皮肤文件夹。
-
-### 各游戏纹理要求
-
-- **Maze**：wall, floor, player, goal
-- **Sokoban**：wall, floor, player, box, target
-- **PathFinder**：自定义背景和路径纹理
-- **TrapField**：floor, trap, player, goal
+各游戏所需纹理请参考现有皮肤目录：
+- Maze：wall, floor, player, goal
+- Sokoban：wall, floor, player, box, target
+- PathFinder：自定义背景与路径纹理
+- TrapField：floor, trap, player, goal
 
 ## 🔬 扩展新游戏
 
-VR-Bench 使用适配器模式，便于添加新游戏：
+1. 在 `games/` 下创建新目录  
+2. 实现 `GameAdapter` 接口（generate_level/save_level/get_level_hash/is_duplicate）  
+3. 编写游戏逻辑与渲染  
+4. 在 `evaluation/vlm_eval/executors/` 中添加执行器  
+5. 在 `generation/batch_generate.py` 中注册  
 
-1. 在 `games/` 下创建新的游戏目录
-2. 实现 `GameAdapter` 接口：
-   - `generate_level()`：关卡生成逻辑
-   - `save_level()`：保存关卡数据和渲染输出
-   - `get_level_hash()`：用于去重
-   - `is_duplicate()`：重复检测
-3. 实现游戏特定逻辑和渲染
-4. 在 `evaluation/vlm_eval/executors/` 中创建执行器
-5. 在 `generation/batch_generate.py` 中注册新游戏
+## 🐛 问题排查
 
-详细说明请参考现有游戏实现。
-
-## 🐛 常见问题
-
-### 问题排查
-
-**问题**：VLM 推理时 CUDA 内存不足  
-- **解决方案**：减小批处理大小或使用多 GPU 张量并行
-
-**问题**：视频生成失败  
-- **解决方案**：确保已安装 ffmpeg：`pip install imageio-ffmpeg`
-
-**问题**：API 速率限制  
-- **解决方案**：减少评估配置中的 `workers` 数量或添加延时
-
-**问题**：生成重复关卡  
-- **解决方案**：增大生成配置中的 `max_duplicate_retries`
-
-**问题**：纹理加载失败  
-- **解决方案**：检查纹理文件格式（支持 PNG/JPG）和路径配置
-
-## 💡 最佳实践
-
-### 数据集生成
-
-1. **从小规模开始**：先生成少量关卡测试配置
-2. **验证可解性**：确保 `check_solvable: true`
-3. **使用多皮肤**：为同一游戏准备多套纹理皮肤以增加多样性
-4. **合理设置难度**：根据目标逐步提高难度参数
-
-### VLM 评估
-
-1. **预热模型**：首次运行前先测试 API 连接
-2. **监控成本**：使用本地模型或设置 `max_levels` 限制评估规模
-3. **保存结果**：评估结果自动保存到 `output_dir`
-4. **批量测试**：在配置文件中列出多个模型进行对比
-
-## 📊 性能优化
-
-- **并行生成**：根据 CPU 核心数调整 `max_workers`
-- **GPU 利用**：使用 SGLang 进行高效的本地 VLM 推理
-- **缓存模型**：设置 `HF_CACHE_DIR` 避免重复下载
-- **视频压缩**：调整 FPS 和分辨率，平衡质量与文件大小
+- **CUDA OOM**：减小 batch 或用多 GPU 并行  
+- **视频生成失败**：确保安装 ffmpeg：`pip install imageio-ffmpeg`  
+- **API 速率限制**：减少 `workers` 或增加延时  
+- **生成重复关卡**：提高 `max_duplicate_retries`  
+- **纹理加载失败**：检查纹理格式与路径  
 
 ## 📚 引用
-
-如果您在研究中使用了 VR-Bench，请引用：
 
 ```bibtex
 @article{yang2025vrbench,
@@ -272,34 +228,23 @@ VR-Bench 使用适配器模式，便于添加新游戏：
 
 ## 🤝 贡献
 
-欢迎贡献！请随时提交 Pull Request。对于重大更改：
-
-1. Fork 本仓库
-2. 创建特性分支（`git checkout -b feature/AmazingFeature`）
-3. 提交更改（`git commit -m 'Add some AmazingFeature'`）
-4. 推送到分支（`git push origin feature/AmazingFeature`）
-5. 打开 Pull Request
-
-### 贡献指南
-
-- 遵循现有代码风格
-- 添加适当的注释和文档
-- 确保所有测试通过
-- 更新相关文档
+欢迎提交 Pull Request。对于重大改动：
+1. Fork 仓库并创建分支  
+2. 提交更改并更新相关文档/注释  
+3. 确认测试通过后发起 PR  
 
 ## 🔗 相关资源
 
 - [Hugging Face Dataset](https://huggingface.co/datasets/amagipeng/VR-Bench)
 
-## 📝 许可协议
+## 📝 许可证
 
-本项目采用 MIT 许可证，详见 `LICENSE` 文件。
+MIT 许可证，详见 `LICENSE`。
 
 ## 🙏 致谢
 
-VR-Bench 基于多个开源项目以及视觉推理和 VLM 评估领域的研究成果。
+感谢视觉推理与 VLM 领域的相关开源项目与研究成果。
 
 ## 📧 联系方式
 
-如有问题和反馈，请在 GitHub 上提交 issue 或联系维护者。
-
+如有问题与反馈，请在 GitHub 提 Issue 或联系维护者。

@@ -66,26 +66,14 @@ cd VR-Bench
 pip install -r requirements.txt
 ```
 
-### 2. Environment Configuration
-
-```bash
-# Copy environment template
-cp .env.example .env
-
-# Edit .env with your settings
-# - API keys for VLM evaluation
-# - Dataset paths
-# - CUDA configuration
-```
-
-### 3. Download Dataset
+### 2. Download Dataset
 
 ```bash
 # Download pre-generated dataset from Hugging Face
 python dataset_init.py --output-dir ./dataset_VR
 ```
 
-### 4. Generate Custom Levels
+### 3. Generate Custom Levels
 
 ```bash
 # Edit config/config.yaml to configure game type and difficulty
@@ -93,76 +81,58 @@ python dataset_init.py --output-dir ./dataset_VR
 python -m generation.batch_generate config/config.yaml
 ```
 
-### 5. Evaluate VLMs
+## 🎯 Evaluation Method
+
+### Video models (trajectory reasoning)
 
 ```bash
-# Start local VLM server (optional, for local models)
-bash scripts/start_sglang_server.sh
+# Evaluate generated videos against GT trajectories (auto-matches difficulties)
+bash scripts/videomodel_evaluate.sh
 
-# Run evaluation
+# Or run directly
+python evaluation/videomodel_eval/batch_evaluate.py \
+  DATASET_DIR OUTPUT_DIR RESULT_DIR \   # DATASET_DIR=GT dataset root, OUTPUT_DIR=model outputs, RESULT_DIR=eval outputs
+  --gpu   # optional
+```
+
+### VLMs (planning/action reasoning)
+
+1) Configure environment: `cp .env.example .env` and fill API keys, dataset paths, CUDA, etc.  
+2) (Optional/local models) start the VLM service:
+
+```bash
+bash scripts/start_sglang_server.sh
+```
+
+3) Run VLM evaluation on the dataset results:
+
+```bash
 bash scripts/run_vlm_eval.sh
 ```
+
+
+## 📊 Evaluation Metrics
+
+- **PR (Precision Rate)**: Fraction of resampled points that stay within a small tolerance to the GT path; measures path shape consistency.
+- **SR (Success Rate)**: Whether the generated trajectory (player or box for Sokoban) enters the goal bounding box at least once.
+- **SD (Step Deviation)**: Relative path-length overrun vs GT (`len_gen / len_gt - 1`), only defined when SR=1 and non-negative.
+- **EM (Exact Match)**: Perfect flag (1/0) when PR exceeds a threshold and |SD| is small, conditioned on SR=1.
+- **MF (Mask Fidelity)**: Background stability score [0,1]; compares sampled frames to the first frame while masking start/goal/player regions.
 
 ## 📁 Project Structure
 
 ```
 VR-Bench/
 ├── core/                   # Core framework
-│   ├── schema/            # Unified state representation
-│   ├── renderer.py        # Base rendering engine
-│   ├── texture_handler.py # Texture management
-│   └── game_adapter.py    # Game adapter interface
-├── games/                 # Game implementations
-│   ├── maze/             # Maze game
-│   ├── sokoban/          # Sokoban game
-│   ├── maze3d/           # 3D Maze game
-│   ├── pathfinder/       # PathFinder game
-│   └── trapfield/        # TrapField game
-├── generation/           # Dataset generation
-│   ├── batch_generate.py # Batch generation tool
-│   └── generate_videos.py # Video generation
-├── evaluation/           # VLM evaluation
-│   └── vlm_eval/        # Evaluation framework
-├── config/              # Configuration files
-│   ├── config.yaml      # Generation config
-│   └── vlm/            # Evaluation configs
-├── skins/              # Texture assets
-└── scripts/            # Utility scripts
+├── games/                  # Game implementations
+├── generation/             # Dataset generation
+├── evaluation/
+│   ├── videomodel_eval/    # Evaluate video models’ trajectory reasoning
+│   └── vlm_eval/           # Evaluate VLMs’ planning / action reasoning
+├── config/                 # Generation & evaluation configs
+├── skins/                  # Texture assets
+└── scripts/                # Utility scripts
 ```
-
-## 🎯 Usage Examples
-
-### Generate Maze Dataset
-
-```bash
-# Edit config/config.yaml
-game_type: "maze"
-skins_root: "skins/maze"
-difficulties:
-  small:
-    maze_size: 9
-    count: 100
-
-# Run generation
-python -m generation.batch_generate config/config.yaml
-```
-
-### Evaluate on Sokoban
-
-```bash
-# Edit config/vlm/sokoban_eval.yaml
-# Configure models and dataset path
-
-# Run evaluation
-python -m evaluation.vlm_eval.run_vlm_eval config/vlm/sokoban_eval.yaml
-```
-
-## 📊 Evaluation Metrics
-
-- **Success Rate (SR)**: Percentage of levels solved correctly
-- **Path Ratio (PR)**: Ratio of correct consecutive actions from the start
-- **Move Ratio (MR)**: Binary metric for exact solution match
-- **Step Count**: Number of actions in the solution
 
 ## 🔧 Configuration
 
@@ -174,7 +144,7 @@ python -m evaluation.vlm_eval.run_vlm_eval config/vlm/sokoban_eval.yaml
 - `generation.max_attempts`: Max attempts to generate valid level
 - `parallel.max_workers`: Number of parallel workers
 
-### Evaluation Config (`config/vlm/*.yaml`)
+### VLM Evaluation Config (`config/vlm/*.yaml`)
 
 - `game`: Game type to evaluate
 - `dataset`: Path to dataset

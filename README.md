@@ -20,9 +20,8 @@ VR-Bench is a comprehensive benchmark for evaluating Vision-Language Models (VLM
 
 > If you encounter any difficulties in using or reproducing the code, please contact me directly (Email: iamyangcheng7@gmail.com, Wechat: 19883175660). The parameter settings during the evaluation process and the selection of crackers will affect the evaluation results.
 
-   ```markdown
 ![](https://raw.githubusercontent.com/ImYangC7/Repo-recorder/main/generated/ImYangC7__VR-Bench_status.svg)
-   ```
+
 ## 🎊 News 
 
 - [2025.11.26] We apologize for the earlier omission. We have now added all our current maze textures to the skin folder to enable normal generation. In future releases, we will use nanobanana to support automatic skin generation. Please follow our updates.

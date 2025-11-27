@@ -84,9 +84,14 @@ python dataset_init.py --output-dir ./dataset_VR
 ### 3. Generate Custom Levels
 
 ```bash
-# Edit config/config.yaml to configure game type and difficulty
-# Then run batch generation
+# Option A: call Python directly
+# Edit config/config.yaml to configure game type, skins_root, output_root, and difficulties
 python -m generation.batch_generate config/config.yaml
+python generation/generate_videos.py <DATASET_DIR> --workers <N> --skin <SKIN_PATH>
+
+# Option B: use the helper shell scripts (equivalent to the above)
+bash scripts/generate_by_skins.sh config/config.yaml
+bash scripts/generate_videos.sh <DATASET_DIR> [workers]
 ```
 
 ## 🏋️‍♂️ Training Models

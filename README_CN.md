@@ -16,74 +16,85 @@
 
 中文文档 | [English](README.md)
 
-VR-Bench 是一个综合基准，用于通过各种益智游戏评估视觉语言模型 (VLM) 的空间推理和规划任务。它为数据集生成、评估和分析提供了统一的框架。
+VR-Bench 是一个综合基准，用于通过多种益智游戏评估视觉语言模型（VLM）在空间推理与规划任务上的能力，提供统一的数据生成、评估与分析框架。
 
-## 🧩 基准概述
+> 如果在使用或复现过程中遇到问题，可直接联系我（Email: iamyangcheng7@gmail.com，微信: 19883175660）。评估时的参数选择与破题策略会影响结果。
 
-VR-Bench 概述。 (A) 迷宫类型。 VR-Bench 包括五种迷宫类型：规则迷宫、不规则迷宫、3D 迷宫、Trapfield 和 Sokoban，涵盖 2D 和 3D 设置以及不同的任务结构，产生广泛的空间推理场景。 (B) 通过视频范式进行推理。 VR-Bench 采用帧链推理范式，要求模型产生逐帧推理，以捕获顺序视觉推理。 (C) 基准表现。领先的 VLM 和视频模型根据所有迷宫类型的四个核心指标进行评估，揭示了空间推理能力的明显差异。 (D) 附加分析。 VR-Bench还支持难度泛化、纹理泛化、迷宫型泛化和测试时间缩放等评估，从而能够全面评估模型的鲁棒性和泛化能力。
+## 🎊 动态
 
-![视频原因](./resource/video_reason.svg)
+- [2025.11.26] 抱歉此前遗漏了皮肤素材，现已补全并放入 skins 目录，方便正常生成。后续版本将用 nanobanana 支持自动皮肤生成，敬请关注。
+- [2025.11.24] 发布用于训练 Wan-R1 的脚本与配置。
+- [2025.11.19] 发布全部任务的评估代码。
 
-为了评估 VTR 任务的泛化能力并增强适应不同迷宫场景的鲁棒性，我们引入了两个关键维度的变化：（1）**难度等级**：我们通过调整迷宫大小（例如从 5×5 扩展到 7×7）、修改迷宫分支数量和添加障碍来定义三个难度等级（简单、中等和困难）； (2) **迷宫纹理**：我们使用通过程序方法和生成模型生成的纹理来改变迷宫障碍物、路径和其他组件的纹理，这将策略暴露于广泛的视觉分布，并减轻了对干净的合成环境的过度拟合。
+## 🧩 基准概览
 
-![变体](./resource/variant.svg)
+VR-Bench 总览： (A) 迷宫类型：包含规则迷宫、不规则迷宫、3D 迷宫、Trapfield、Sokoban，覆盖 2D/3D 场景与多样任务结构，提供丰富的空间推理情境。 (B) 视频推理范式：采用逐帧链式推理，要求模型输出帧级推断以体现序列化视觉推理。 (C) 基准表现：在所有迷宫类型上对 VLM 与视频模型进行四个核心指标的评估，凸显空间推理能力差异。 (D) 附加分析：支持难度泛化、纹理泛化、迷宫类型泛化以及测试时扩展等维度的评估，全面衡量鲁棒性与泛化能力。
+
+![video reason](./resource/video_reason.svg)
+
+为评估 VTR 任务的泛化能力并提升在多样迷宫场景中的鲁棒性，我们在两个维度上做变化：（1）**难度等级**：通过调整迷宫规模（如 5×5 到 7×7）、分支数量与障碍，设置简单/中等/困难；（2）**迷宫纹理**：用程序化与生成式纹理改变障碍、路径等组件，扩大视觉分布，缓解对干净合成环境的过拟合。
+
+![variant](./resource/variant.svg)
 
 ## 🎮 支持的游戏
 
-VR-Bench 包括五种不同的益智游戏，每种游戏都测试视觉推理的不同方面：
+- **Maze（迷宫）**：在网格迷宫中从起点到终点
+- **Sokoban（推箱子）**：推箱到目标位置并避开墙壁
+- **3D Maze（3D 迷宫）**：多层迷宫，梯子连接楼层
+- **PathFinder（路径查找）**：在不规则迷宫中沿带标记的路径点前进
+- **TrapField（陷阱场）**：避开陷阱完成导航
 
-- **迷宫**：在基于网格的迷宫中从起点导航到目标
-- **推箱子**：将盒子推到目标位置，同时避开墙壁
-- **3D迷宫**：多层迷宫，带有连接不同楼层的梯子
-- **路径查找器**：通过带有标记的路点的不规则迷宫查找路径
-- **TrapField**：在场地中导航，同时避免陷阱
+## ✨ 核心特性
 
-## ✨ 主要特点
+- **程序化生成**：自动生成多样关卡，难度可配置
+- **纹理自定义**：通过皮肤支持多种视觉主题
+- **视频渲染**：生成 24 FPS 的平滑解题视频
+- **VLM 评估**：内置多种 VLM 测试（GPT、Gemini、Qwen 等）
+- **全面指标**：Success Rate、Path Ratio、Move Ratio
+- **并行处理**：多线程生成与评估
+- **去重机制**：自动检测并移除重复关卡
 
-- **程序生成**：自动生成具有可配置难度的不同谜题级别
-- **纹理自定义**：通过纹理皮肤支持自定义视觉主题
-- **视频渲染**：生成具有流畅动画的解决方案视频（24 FPS）
-- **VLM评估**：用于测试各种VLM（GPT、Gemini、Qwen等）的内置框架
-- **综合指标**：成功率（SR）、路径比率（PR）、移动比率（MR）
-- **并行处理**：多线程生成和评估以提高效率
-- **重复数据删除**：自动检测和删除重复级别
-
-## 📋 要求
+## 📋 环境要求
 
 - Python >= 3.10
-- CUDA兼容GPU（可选，用于本地VLM推理）
+- CUDA 兼容 GPU（可选，用于本地 VLM 推理）
 
-## 🚀 快速入门
+## 🚀 快速开始
 
-### 1.安装
+### 1. 安装
 
 ```bash
-# Clone the repository
+# 克隆仓库
 git clone https://github.com/ImYangC7/VR-Bench.git
 cd VR-Bench
 
-# Install dependencies
+# 安装依赖
 pip install -r requirements.txt
 ```
 
-### 2.下载数据集
+### 2. 下载数据集
 
 ```bash
-# Download pre-generated dataset from Hugging Face
+# 从 Hugging Face 下载预生成的数据集
 python dataset_init.py --output-dir ./dataset_VR
 ```
 
 ### 3. 生成自定义关卡
 
 ```bash
-# Edit config/config.yaml to configure game type and difficulty
-# Then run batch generation
+# 方案 A：直接调用 Python
+# 编辑 config/config.yaml（game_type、skins_root、output_root、difficulties 等）
 python -m generation.batch_generate config/config.yaml
+python generation/generate_videos.py <DATASET_DIR> --workers <N> --skin <SKIN_PATH>
+
+# 方案 B：使用脚本（等价调用）
+bash scripts/generate_by_skins.sh config/config.yaml
+bash scripts/generate_videos.sh <DATASET_DIR> [workers]
 ```
 
 ## 🏋️‍♂️ 训练模型
 
-我们使用 [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) 进行扩散模型训练和推理。安装：
+我们使用 [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) 进行扩散模型的训练与推理。安装方法：
 
 ```bash
 git clone https://github.com/modelscope/DiffSynth-Studio.git
@@ -91,9 +102,9 @@ cd DiffSynth-Studio
 pip install -e .
 ```
 
-安装后，**确保在启动实验之前更新训练脚本中的数据集路径、超参数和输出目录**。
+安装完成后，**请先在训练脚本中更新数据集路径、超参数与输出目录**，再启动实验。
 
-这是一个参考配置：
+参考配置：
 
 ```bash
 accelerate launch examples/wanvideo/model_training/train.py \
@@ -114,32 +125,32 @@ accelerate launch examples/wanvideo/model_training/train.py \
   --extra_inputs "input_image" 
 ```
 
-使用您的特定数据位置编辑上面的脚本。
+请根据自己的数据位置与实验需求修改。
 
-## 🎯 评估方法
+## 🎯 评估方式
 
 ### 视频模型（轨迹推理）
 
 ```bash
-# Evaluate generated videos against GT trajectories (auto-matches difficulties)
+# 将生成视频与 GT 轨迹对比（自动匹配难度）
 bash scripts/videomodel_evaluate.sh
 
-# Or run directly
+# 或直接运行
 python evaluation/videomodel_eval/batch_evaluate.py \
-  DATASET_DIR OUTPUT_DIR RESULT_DIR \   # DATASET_DIR=GT dataset root, OUTPUT_DIR=model outputs, RESULT_DIR=eval outputs
-  --gpu   # optional
+  DATASET_DIR OUTPUT_DIR RESULT_DIR \   # DATASET_DIR=GT 数据集根目录，OUTPUT_DIR=模型输出目录，RESULT_DIR=评估输出目录
+  --gpu   # 可选
 ```
 
-### VLM（计划/行动推理）
+### VLM（规划/动作推理）
 
-1）配置环境：`cp .env.example .env`并填写API密钥、数据集路径、CUDA等。  
-2）（可选/本地机型）启动VLM服务：
+1）配置环境：`cp .env.example .env` 并填入 API 密钥、数据集路径、CUDA 等。  
+2）（可选，本地模型）启动 VLM 服务：
 
 ```bash
 bash scripts/start_sglang_server.sh
 ```
 
-3) 对数据集结果运行VLM评估：
+3）对数据集结果运行 VLM 评估：
 
 ```bash
 bash scripts/run_vlm_eval.sh
@@ -147,120 +158,106 @@ bash scripts/run_vlm_eval.sh
 
 ## 📊 评估指标
 
-- **PR（精确率）**：保持在 GT 路径较小公差范围内的重采样点的分数；测量路径形状的一致性。
-- **SR（成功率）**：生成的轨迹（推箱子的玩家或盒子）是否至少进入目标边界框一次。
-- **SD​​（步长偏差）**：相对路径长度超限与 GT (`len_gen / len_gt - 1`)，仅在 SR=1 且非负时定义。
-- **EM（精确匹配）**：当 PR 超过阈值且 |SD| 时完美标记 (1/0)很小，条件是 SR=1。
-- **MF（掩模保真度）**：背景稳定性得分 [0,1]；将采样帧与第一帧进行比较，同时屏蔽开始/目标/玩家区域。
+- **PR（Precision Rate）**：重采样点落在 GT 路径小偏差范围内的比例，衡量轨迹形状一致性  
+- **SR（Success Rate）**：生成轨迹（推箱子时用箱子/玩家轨迹）是否至少一次进入目标框  
+- **SD（Step Deviation）**：路径长度相对超长比 `len_gen / len_gt - 1`，仅在 SR=1 且非负时定义  
+- **EM（Exact Match）**：当 PR 超阈值且 |SD| 足够小时（且 SR=1）记为 1，否则为 0  
+- **MF（Mask Fidelity）**：背景稳定度 [0,1]；比较采样帧与首帧（遮住起点/终点/玩家区域）衡量背景变化  
 
-## 🧪 评价
+## 🧪 评测
 
-训练模型后，您可以使用我们提供的推理脚本对其进行评估：
+训练完模型后，可用我们提供的推理脚本进行评测：
 
-1. **复制推理脚本**：将评估脚本从 VR-Bench 复制到 DiffSynth-Studio：
-```bash
+1. **复制推理脚本**：将评测脚本从 VR-Bench 复制到 DiffSynth-Studio：
+   ```bash
    cp VR-Bench/scripts/Wan2.2-TI2V-5B_lora.py DiffSynth-Studio/examples/wanvideo/model_inference/
-```
+   ```
 
-2. **更新路径**：编辑复制的脚本以根据您的设置更新路径：
-   - 更新LoRA检查点路径
+2. **更新路径**：根据您的环境编辑复制后的脚本：
+   - 更新 LoRA 检查点路径
    - 更新输入图像路径
    - 更新输出视频路径
-   - 根据需要自定义提示
+   - 按需自定义提示词
 
-3. **运行评估**：
-```bash
+3. **运行评测**：
+   ```bash
    cd DiffSynth-Studio/examples/wanvideo/model_inference/
    python Wan2.2-TI2V-5B_lora.py
-```
+   ```
 
-该脚本将根据您训​​练的模型生成视频并将其保存到指定的输出目录。
+脚本将基于您训练的模型生成视频，并保存到指定输出目录。
 
 ## 📁 项目结构
 
 ```
 VR-Bench/
-├── core/                   # Core framework
-├── games/                  # Game implementations
-├── generation/             # Dataset generation
+├── core/                   # 核心框架
+├── games/                  # 游戏实现
+├── generation/             # 数据生成
 ├── evaluation/
-│   ├── videomodel_eval/    # Evaluate video models’ trajectory reasoning
-│   └── vlm_eval/           # Evaluate VLMs’ planning / action reasoning
-├── config/                 # Generation & evaluation configs
-├── skins/                  # Texture assets
-└── scripts/                # Utility scripts
+│  ├── videomodel_eval/     # 评估视频模型的轨迹推理
+│  └── vlm_eval/            # 评估 VLM 的规划/动作推理
+├── config/                 # 生成与评估配置
+├── skins/                  # 纹理资源
+└── scripts/                # 实用脚本
 ```
 
 ## 🔧 配置
 
 ### 生成配置（`config/config.yaml`）
+- `game_type`：生成的游戏类型（maze/sokoban/pathfinder/trapfield/maze3d）
+- `skins_root`：纹理资源路径
+- `difficulties`：难度等级与参数
+- `generation.max_attempts`：生成有效关卡的最大尝试次数
+- `parallel.max_workers`：并行进程数
 
-- `game_type`：要生成的游戏（迷宫、推箱子、探路者、陷阱场、maze3d）
-- `skins_root`：纹理资源的路径
-- `difficulties`：难度级别和参数
-- ` Generation.max_attempts`：生成有效级别的最大尝试次数
-- `parallel.max_workers`：并行工作线程数
-
-### VLM 评估配置 (`config/vlm/*.yaml`)
-
-- `game`：要评估的游戏类型
-- `dataset`：数据集的路径
-- `models`：要测试的 VLM 列表
-- `workers`：并行评估工作人员的数量
-- `max_levels`：评估的最大级别（全部为-1）
+### VLM 评估配置（`config/vlm/*.yaml`）
+- `game`：评估的游戏类型
+- `dataset`：数据集路径
+- `models`：待测 VLM 列表
+- `workers`：并行评估进程数
+- `max_levels`：最大评估关卡数（-1 表示全部）
 
 ## 🎨 自定义纹理
 
-每个游戏都支持自定义纹理皮肤以实现视觉多样性：
+1. 在 `skins/<game_name>/` 下创建新文件夹  
+2. 添加所需纹理（PNG/JPG）  
+3. 在配置中指定皮肤路径  
 
-1. 在`skins/<game_name>/`下创建一个新文件夹
-2.添加所需的纹理图片（PNG/JPG格式）
-3、配置中指定皮肤路径
-
-所需的纹理文件因游戏而异。请参阅现有的皮肤文件夹以获取示例。
-
-### 游戏的纹理要求
-
-- **迷宫**：墙壁、地板、玩家、目标
-- **推箱子**：墙、地板、玩家、盒子、目标
-- **PathFinder**：自定义背景和路径纹理
-- **TrapField**：地板、陷阱、玩家、球门
+各游戏示例：
+- Maze：wall, floor, player, goal
+- Sokoban：wall, floor, player, box, target
+- PathFinder：自定义背景与路径纹理
+- TrapField：floor, trap, player, goal
 
 ## 🔬 添加新游戏
 
-VR-Bench 使用适配器模式来轻松扩展：
+VR-Bench 采用适配器模式，扩展流程：
 
-1.在`games/`下创建一个新的游戏目录
-2. 实现`GameAdapter`接口：
+1. 在 `games/` 下创建新目录  
+2. 实现 `GameAdapter` 接口：
    - `generate_level()`：关卡生成逻辑
    - `save_level()`：保存关卡数据并渲染输出
-   - `get_level_hash()`：用于重复数据删除
+   - `get_level_hash()`：用于去重
    - `is_duplicate()`：重复检测
-3. 实现游戏特定的逻辑和渲染
-4. 在 `evaluation/vlm_eval/executors/` 中创建执行器
-5. 在 ` Generation/batch_generate.py` 中注册
+3. 编写游戏特定逻辑与渲染
+4. 在 `evaluation/vlm_eval/executors/` 中添加执行器
+5. 在 `generation/batch_generate.py` 中注册
 
-请参阅现有游戏实现以供参考。
+可参考现有游戏实现。
 
-## 🐛 故障排除
+## 🐛 问题排查
 
 ### 常见问题
 
-**问题**：VLM 推理期间 CUDA 内存不足
-- **解决方案**：减少批量大小或使用多个 GPU 的张量并行性
+**CUDA 内存不足（VLM 推理）**：减小 batch，或使用多卡张量并行  
+**视频生成失败**：确保安装 ffmpeg：`pip install imageio-ffmpeg`  
+**API 速率限制**：降低评估配置中的 `workers` 或增加延时  
+**生成重复关卡**：提高生成配置的 `max_duplicate_retries`  
 
-**问题**：视频生成失败
-- **解决方案**：确保已安装 ffmpeg：`pip install imageio-ffmpeg`
+## 📚 引用
 
-**问题**：API 速率限制
-- **解决方案**：减少评估配置中的“workers”或增加延迟
-
-**问题**：生成重复的关卡
-- **解决方案**：在生成配置中增加“max_duplicate_retries”
-
-## 📚 引文
-
-如果您在研究中使用 VR-Bench，请引用：
+如在研究中使用 VR-Bench，请引用：
 
 ```bibtex
 @article{yang2025vrbench,
@@ -273,7 +270,7 @@ VR-Bench 使用适配器模式来轻松扩展：
 
 ## 🤝 贡献
 
-欢迎贡献！请随时提交 Pull 请求。
+欢迎提交 Pull Request。
 
 ## 🔗 相关资源
 
@@ -281,13 +278,13 @@ VR-Bench 使用适配器模式来轻松扩展：
 
 ## 📝 许可证
 
-该项目根据 MIT 许可证获得许可 - 有关详细信息，请参阅许可证文件。
+本项目基于 MIT 许可证，详见 `LICENSE`。
 
-## 🙏致谢
+## 🙏 致谢
 
-VR-Bench 基于各种开源项目以及视觉推理和 VLM 评估方面的研究。
+感谢视觉推理与 VLM 领域的相关开源项目和研究。
 
 ## 📧 联系方式
 
-如有问题和反馈，请在 GitHub 上提出问题或联系维护人员。
+如有问题或反馈，请在 GitHub 提 Issue 或联系维护者。
 

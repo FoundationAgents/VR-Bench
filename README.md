@@ -129,6 +129,31 @@ accelerate launch examples/wanvideo/model_training/train.py \
 
 Edit the script above with your specific data locations.
 
+
+## 🧪 Inference
+
+After training your model, you can run inference with the provided script:
+
+1. **Copy the inference script**: Copy the evaluation script from VR-Bench to DiffSynth-Studio:
+   ```bash
+   cp VR-Bench/scripts/Wan2.2-TI2V-5B_lora.py DiffSynth-Studio/examples/wanvideo/model_inference/
+   ```
+
+2. **Update paths**: Edit the copied script to update the paths according to your setup:
+   - Update the LoRA checkpoint path
+   - Update the input image path
+   - Update the output video path
+   - Customize the prompt as needed
+
+3. **Run inference**:
+   ```bash
+   cd DiffSynth-Studio/examples/wanvideo/model_inference/
+   python Wan2.2-TI2V-5B_lora.py
+   ```
+
+The script will generate videos based on your trained model and save them to the specified output directory.
+
+
 ## 🎯 Evaluation Method
 
 ### Video models (trajectory reasoning)
@@ -166,30 +191,6 @@ bash scripts/run_vlm_eval.sh
 - **SD (Step Deviation)**: Relative path-length overrun vs GT (`len_gen / len_gt - 1`), only defined when SR=1 and non-negative.
 - **EM (Exact Match)**: Perfect flag (1/0) when PR exceeds a threshold and |SD| is small, conditioned on SR=1.
 - **MF (Mask Fidelity)**: Background stability score [0,1]; compares sampled frames to the first frame while masking start/goal/player regions.
-
-## 🧪 Evaluation
-
-After training your model, you can evaluate it using our provided inference script:
-
-1. **Copy the inference script**: Copy the evaluation script from VR-Bench to DiffSynth-Studio:
-   ```bash
-   cp VR-Bench/scripts/Wan2.2-TI2V-5B_lora.py DiffSynth-Studio/examples/wanvideo/model_inference/
-   ```
-
-2. **Update paths**: Edit the copied script to update the paths according to your setup:
-   - Update the LoRA checkpoint path
-   - Update the input image path
-   - Update the output video path
-   - Customize the prompt as needed
-
-3. **Run evaluation**:
-   ```bash
-   cd DiffSynth-Studio/examples/wanvideo/model_inference/
-   python Wan2.2-TI2V-5B_lora.py
-   ```
-
-The script will generate videos based on your trained model and save them to the specified output directory.
-
 
 
 

@@ -1,0 +1,9 @@
+{
+  "game_type": "pathfinder",
+  "skin_id": "1",
+  "visual_description": {
+    "start": "green circle",
+    "end": "red circle",
+    "road": "white square"
+  }
+}

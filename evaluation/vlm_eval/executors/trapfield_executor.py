@@ -4,7 +4,7 @@ from pathlib import Path
 
 from core.schema import UnifiedState
 from evaluation.vlm_eval.game_executor import GameExecutor
-from evaluation.vlm_eval.prompts import get_prompt
+from evaluation.vlm_eval.prompts import get_dynamic_prompt
 from games.trapfield import constants
 from games.trapfield.renderer import TrapFieldRenderer
 from generation.path_finder import find_trapfield_paths
@@ -71,10 +71,10 @@ class TrapFieldExecutor(GameExecutor):
         renderer.render_grid(state.grid.data, output_path)
     
     def get_system_prompt(self) -> str:
-        return get_prompt('trapfield', 'system')
-    
+        return get_dynamic_prompt('trapfield', 'system', self.assets_folder)
+
     def get_user_prompt(self) -> str:
-        return get_prompt('trapfield', 'user')
+        return get_dynamic_prompt('trapfield', 'user', self.assets_folder)
     
     def get_game_type(self) -> str:
         return 'trapfield'

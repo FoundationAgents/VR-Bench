@@ -24,7 +24,7 @@ difficulties:
 
 # 生成配置
 generation:
-  fps: 24  # 固定24fps（连续移动动画）
+  fps: 24  
   max_duplicate_retries: 100
 
 # 并行配置

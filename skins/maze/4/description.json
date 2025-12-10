@@ -1,0 +1,10 @@
+{
+  "game_type": "maze",
+  "skin_id": "4",
+  "visual_description": {
+    "player": "anime schoolgirl character",
+    "goal": "green square",
+    "wall": "gray stone wall",
+    "floor": "wooden floor tiles"
+  }
+}

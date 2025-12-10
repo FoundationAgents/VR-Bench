@@ -1,0 +1,10 @@
+{
+  "game_type": "trapfield",
+  "skin_id": "4",
+  "visual_description": {
+    "player": "gray robot",
+    "goal": "golden star",
+    "trap": "blue crystal block",
+    "floor": "silver metal plate"
+  }
+}

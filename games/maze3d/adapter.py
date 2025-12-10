@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from core.game_adapter import GameAdapter
 from core.schema import UnifiedState, Grid, Entity, RenderConfig, BBox, Position as SchemaPosition
 from games.maze3d.main import QAGenerator, draw_puzzle, generate_solution_video
+from games.maze3d.color_handler import load_colors_from_skin
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -150,8 +151,16 @@ class Maze3DAdapter(GameAdapter):
         return "3d_maze"
     
     def get_required_texture_files(self) -> list:
-        """3D Maze 不需要纹理文件"""
+        """3D Maze 使用 colors.json 代替纹理文件"""
+        # 返回空列表，因为我们使用 colors.json 而不是纹理图片
+        # 但这会导致 find_skin_folders 认为所有目录都有效
+        # 实际的验证在 load_colors_from_skin 中处理
         return []
+
+    def validate_skin_folder(self, skin_folder: Path) -> bool:
+        """验证皮肤文件夹是否有效（包含 colors.json）"""
+        colors_path = skin_folder / 'colors.json'
+        return colors_path.exists()
     
     def generate_level(
         self,
@@ -216,8 +225,11 @@ class Maze3DAdapter(GameAdapter):
             state_path = states_dir / state_filename
             video_path = videos_dir / video_filename
 
-            # 获取颜色配置
-            colors = kwargs.get('colors', None)
+            # 获取颜色配置（必须从皮肤目录加载）
+            assets_folder = kwargs.get('assets_folder', '')
+            if not assets_folder:
+                raise ValueError("assets_folder is required for 3D Maze")
+            colors = load_colors_from_skin(assets_folder)
 
             # 绘制谜题图片（起点位置的小球）
             draw_puzzle(level['puzzle'], str(image_path), player_pos=level['puzzle'].start_pos, colors=colors)

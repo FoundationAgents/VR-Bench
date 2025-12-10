@@ -1,0 +1,9 @@
+{
+  "game_type": "pathfinder",
+  "skin_id": "3",
+  "visual_description": {
+    "start": "blue ice ball",
+    "end": "blue circle",
+    "road": "icy texture"
+  }
+}

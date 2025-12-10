@@ -117,7 +117,10 @@ def draw_puzzle(puzzle, filename: str, player_pos: Position = None, colors: dict
         puzzle: 谜题对象
         filename: 输出文件名
         player_pos: 玩家位置
-        colors: 颜色配置字典，包含 'start_pos', 'goal_pos', 'default_cube'
+        colors: 颜色配置字典，必须包含 'start_pos', 'goal_pos', 'default_cube', 'ball', 'ball_edge'
+
+    Raises:
+        ValueError: colors 为 None 或缺少必需的颜色键
     """
     import tempfile
     from PIL import Image
@@ -171,15 +174,17 @@ def _draw_scene(puzzle, filename: str, dpi: int = 100, colors: dict = None):
         puzzle: 谜题对象
         filename: 输出文件名
         dpi: 图片分辨率
-        colors: 颜色配置字典，包含 'start_pos', 'goal_pos', 'default_cube'
+        colors: 颜色配置字典，必须包含 'start_pos', 'goal_pos', 'default_cube'
+
+    Raises:
+        ValueError: colors 为 None 或缺少必需的颜色键
     """
-    # 默认颜色配置
     if colors is None:
-        colors = {
-            'start_pos': '#4444FF',
-            'goal_pos': '#FF4444',
-            'default_cube': '#888888'
-        }
+        raise ValueError("colors is required for _draw_scene")
+    required_keys = ['start_pos', 'goal_pos', 'default_cube']
+    missing = [k for k in required_keys if k not in colors]
+    if missing:
+        raise ValueError(f"Missing required color keys: {missing}")
 
     fig = plt.figure(figsize=(8, 8), dpi=dpi)
     ax = fig.add_subplot(111, projection='3d')
@@ -230,11 +235,11 @@ def _draw_scene(puzzle, filename: str, dpi: int = 100, colors: dict = None):
 
         # 根据配置设置颜色
         if cube_pos == puzzle.start_pos:
-            color = colors.get('start_pos', '#4444FF')
+            color = colors['start_pos']
         elif cube_pos == puzzle.goal_pos:
-            color = colors.get('goal_pos', '#FF4444')
+            color = colors['goal_pos']
         else:
-            color = colors.get('default_cube', '#888888')
+            color = colors['default_cube']
 
         pc = Poly3DCollection(verts, alpha=alpha, zorder=2)
         pc.set_facecolor(color)
@@ -267,14 +272,17 @@ def _draw_ball_only(puzzle, player_pos: Position, filename: str, dpi: int = 100,
         player_pos: 玩家位置
         filename: 输出文件名
         dpi: 图片分辨率
-        colors: 颜色配置字典，包含 'ball', 'ball_edge'
+        colors: 颜色配置字典，必须包含 'ball', 'ball_edge'
+
+    Raises:
+        ValueError: colors 为 None 或缺少必需的颜色键
     """
-    # 默认颜色配置
     if colors is None:
-        colors = {
-            'ball': '#FFD700',
-            'ball_edge': '#FF8C00'
-        }
+        raise ValueError("colors is required for _draw_ball_only")
+    required_keys = ['ball', 'ball_edge']
+    missing = [k for k in required_keys if k not in colors]
+    if missing:
+        raise ValueError(f"Missing required color keys: {missing}")
 
     fig = plt.figure(figsize=(8, 8), dpi=dpi)
     ax = fig.add_subplot(111, projection='3d')
@@ -307,8 +315,8 @@ def _draw_ball_only(puzzle, player_pos: Position, filename: str, dpi: int = 100,
 
     # 使用简单的 scatter 绘制圆形标记，使用配置的颜色
     ax.scatter([ball_x], [ball_y], [ball_z],
-              c=colors.get('ball', '#FFD700'), s=ball_size, alpha=1.0,
-              edgecolors=colors.get('ball_edge', '#FF8C00'), linewidths=2,
+              c=colors['ball'], s=ball_size, alpha=1.0,
+              edgecolors=colors['ball_edge'], linewidths=2,
               depthshade=False, marker='o')
 
     # Set axis limits (与场景相同)
@@ -358,7 +366,10 @@ def generate_solution_video(puzzle, output_path: str, fps: int = 24, speed: floa
         output_path: 输出视频路径
         fps: 帧率（默认24）
         speed: 移动速度（格子/秒，默认2.0）
-        colors: 颜色配置字典，包含 'start_pos', 'goal_pos', 'default_cube'
+        colors: 颜色配置字典，必须包含 'start_pos', 'goal_pos', 'default_cube', 'ball', 'ball_edge'
+
+    Raises:
+        ValueError: colors 为 None 或缺少必需的颜色键
     """
     import tempfile
     import shutil
@@ -452,8 +463,11 @@ def generate_solution_video(puzzle, output_path: str, fps: int = 24, speed: floa
             # 转换为RGB并添加到帧列表
             frames.append(np.array(frame_img.convert('RGB')))
 
-        # 保存视频
-        imageio.mimsave(output_path, frames, fps=fps)
+        # 保存视频 - 明确指定使用 ffmpeg 插件
+        writer = imageio.get_writer(output_path, format='FFMPEG', fps=fps)
+        for frame in frames:
+            writer.append_data(frame)
+        writer.close()
 
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)

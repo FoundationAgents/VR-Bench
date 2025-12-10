@@ -1,0 +1,11 @@
+{
+  "game_type": "sokoban",
+  "skin_id": "4",
+  "visual_description": {
+    "player": "purple wizard",
+    "goal": "blue magic circle",
+    "box": "purple wooden crate",
+    "wall": "purple rune stones",
+    "floor": "gray stone bricks"
+  }
+}

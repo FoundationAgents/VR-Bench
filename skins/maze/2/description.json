@@ -1,0 +1,10 @@
+{
+  "game_type": "maze",
+  "skin_id": "2",
+  "visual_description": {
+    "player": "white rabbit",
+    "goal": "orange carrots",
+    "wall": "gray rock",
+    "floor": "green grass tiles"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "game_type": "trapfield",
+  "skin_id": "2",
+  "visual_description": {
+    "player": "blue parka explorer and penguin",
+    "goal": "red flag",
+    "trap": "blue water pool",
+    "floor": "blue ice crystals"
+  }
+}

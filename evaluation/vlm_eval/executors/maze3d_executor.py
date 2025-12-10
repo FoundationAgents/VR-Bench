@@ -9,8 +9,9 @@ from pathlib import Path
 
 from core.schema import UnifiedState
 from evaluation.vlm_eval.game_executor import GameExecutor
-from evaluation.vlm_eval.prompts import get_prompt
+from evaluation.vlm_eval.prompts import get_dynamic_prompt
 from games.maze3d.main import Position, Ladder, PathSegment, BasePuzzleState, draw_puzzle
+from games.maze3d.color_handler import load_colors_from_skin
 
 # 全局渲染锁，防止多线程并发渲染时的资源竞争
 # matplotlib 不是线程安全的，多线程同时渲染会导致图片混乱
@@ -182,15 +183,20 @@ class Maze3DExecutor(GameExecutor):
         current_pos = state.metadata.get('current_pos', state.metadata['start_pos'])
         player_pos = Position(*current_pos)
 
+        # 从皮肤目录加载颜色配置
+        colors = None
+        if self.assets_folder:
+            colors = load_colors_from_skin(self.assets_folder)
+
         # 使用锁保护渲染操作，防止多线程并发渲染导致的图片混乱
         with _render_lock:
-            draw_puzzle(puzzle, output_path, player_pos=player_pos)
-    
+            draw_puzzle(puzzle, output_path, player_pos=player_pos, colors=colors)
+
     def get_system_prompt(self) -> str:
-        return get_prompt('3dmaze', 'system')
-    
+        return get_dynamic_prompt('maze3d', 'system', self.assets_folder or '')
+
     def get_user_prompt(self) -> str:
-        return get_prompt('3dmaze', 'user')
+        return get_dynamic_prompt('maze3d', 'user', self.assets_folder or '')
     
     def get_game_type(self) -> str:
         return 'maze3d'

@@ -1,0 +1,9 @@
+{
+  "game_type": "pathfinder",
+  "skin_id": "4",
+  "visual_description": {
+    "start": "white boat with yellow dots",
+    "end": "white flag with yellow dots",
+    "road": "blue water tiles"
+  }
+}

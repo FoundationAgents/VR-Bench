@@ -1,0 +1,11 @@
+{
+  "game_type": "maze3d",
+  "skin_id": "2",
+  "visual_description": {
+    "start_cube": "dark maroon cube",
+    "goal_cube": "teal green cube",
+    "default_cube": "dark slate blue cube",
+    "ball": "purple ball with magenta edge"
+  }
+}
+

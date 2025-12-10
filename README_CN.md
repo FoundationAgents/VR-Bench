@@ -332,7 +332,7 @@ VR-Bench 采用适配器模式，扩展流程：
 
 ## 🙏 致谢
 
-感谢视觉推理与 VLM 领域的相关开源项目和研究。
+感谢 [AutoEnv](https://github.com/FoundationAgents/AutoEnv)、[Game-RL](https://github.com/tongjingqi/Game-RL)、[DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) 和 [MiniVeo3-Reasoner](https://github.com/thuml/MiniVeo3-Reasoner) 为本项目提供基础支持！
 
 ## 📧 联系方式
 

@@ -1,0 +1,9 @@
+{
+  "game_type": "pathfinder",
+  "skin_id": "2",
+  "visual_description": {
+    "start": "white golf ball",
+    "end": "golf hole",
+    "road": "green grass field"
+  }
+}

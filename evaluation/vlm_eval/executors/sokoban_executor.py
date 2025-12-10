@@ -9,7 +9,7 @@ from core.constants import (
 )
 from core.schema import UnifiedState
 from evaluation.vlm_eval.game_executor import GameExecutor
-from evaluation.vlm_eval.prompts import get_prompt
+from evaluation.vlm_eval.prompts import get_dynamic_prompt
 
 
 class SokobanExecutor(GameExecutor):
@@ -195,11 +195,11 @@ class SokobanExecutor(GameExecutor):
 
     def get_system_prompt(self) -> str:
         """获取系统提示"""
-        return get_prompt('sokoban', 'system')
+        return get_dynamic_prompt('sokoban', 'system', self.assets_folder)
 
     def get_user_prompt(self) -> str:
         """获取用户提示"""
-        return get_prompt('sokoban', 'user')
+        return get_dynamic_prompt('sokoban', 'user', self.assets_folder)
 
     def get_game_type(self) -> str:
         """获取游戏类型"""

@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from core.schema import UnifiedState
 from evaluation.vlm_eval.game_executor import GameExecutor
-from evaluation.vlm_eval.prompts.pathfinder_prompt import PATHFINDER_SYSTEM_PROMPT, PATHFINDER_USER_PROMPT
+from evaluation.vlm_eval.prompts import get_dynamic_prompt
 from games.pathfinder.board import PathFinderBoard
 from games.pathfinder.renderer import render_pathfinder_board, bezier_curve_opencv
 from games.pathfinder.constants import START_COLOR, END_COLOR, ROAD_COLOR, BG_COLOR
@@ -313,11 +313,11 @@ class PathfinderExecutor(GameExecutor):
     
     def get_system_prompt(self) -> str:
         """获取系统提示词"""
-        return PATHFINDER_SYSTEM_PROMPT
-    
+        return get_dynamic_prompt('pathfinder', 'system', self.assets_folder)
+
     def get_user_prompt(self) -> str:
         """获取用户提示词"""
-        return PATHFINDER_USER_PROMPT
+        return get_dynamic_prompt('pathfinder', 'user', self.assets_folder)
     
     def get_game_type(self) -> str:
         """获取游戏类型"""

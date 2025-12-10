@@ -1,0 +1,10 @@
+{
+  "game_type": "maze",
+  "skin_id": "1",
+  "visual_description": {
+    "player": "red circle",
+    "goal": "green square",
+    "wall": "light blue square",
+    "floor": "white square"
+  }
+}

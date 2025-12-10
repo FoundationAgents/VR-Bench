@@ -4,7 +4,7 @@ from pathlib import Path
 
 from core.schema import UnifiedState
 from evaluation.vlm_eval.game_executor import GameExecutor
-from evaluation.vlm_eval.prompts import get_prompt
+from evaluation.vlm_eval.prompts import get_dynamic_prompt
 from games.maze import constants
 from games.maze.generators.image_gen import draw_maze
 from generation.path_finder import find_maze_paths
@@ -70,10 +70,10 @@ class MazeExecutor(GameExecutor):
         draw_maze(state.grid.data, state.render.cell_size, output_path, assets_folder=self.assets_folder)
     
     def get_system_prompt(self) -> str:
-        return get_prompt('maze', 'system')
+        return get_dynamic_prompt('maze', 'system', self.assets_folder)
 
     def get_user_prompt(self) -> str:
-        return get_prompt('maze', 'user')
+        return get_dynamic_prompt('maze', 'user', self.assets_folder)
 
     def get_game_type(self) -> str:
         return 'maze'

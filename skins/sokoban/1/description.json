@@ -1,0 +1,11 @@
+{
+  "game_type": "sokoban",
+  "skin_id": "1",
+  "visual_description": {
+    "player": "blue circle",
+    "goal": "pink square",
+    "box": "yellow square",
+    "wall": "gray square",
+    "floor": "white square"
+  }
+}

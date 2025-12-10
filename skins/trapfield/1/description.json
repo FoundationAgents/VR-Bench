@@ -1,0 +1,10 @@
+{
+  "game_type": "trapfield",
+  "skin_id": "1",
+  "visual_description": {
+    "player": "blue circle",
+    "goal": "green circle",
+    "trap": "red x",
+    "floor": "white square"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "game_type": "maze3d",
+  "skin_id": "4",
+  "visual_description": {
+    "start_cube": "coral red cube",
+    "goal_cube": "royal blue cube",
+    "default_cube": "mint green cube",
+    "ball": "bright green ball with teal edge"
+  }
+}
+

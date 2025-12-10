@@ -1,0 +1,11 @@
+{
+  "game_type": "sokoban",
+  "skin_id": "5",
+  "visual_description": {
+    "player": "brown-haired character",
+    "goal": "green x",
+    "box": "wooden crate",
+    "wall": "orange floor tiles",
+    "floor": "beige sand texture"
+  }
+}

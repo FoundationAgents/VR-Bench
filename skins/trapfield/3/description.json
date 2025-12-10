@@ -1,0 +1,10 @@
+{
+  "game_type": "trapfield",
+  "skin_id": "3",
+  "visual_description": {
+    "player": "blue adventurer",
+    "goal": "golden eagle emblem",
+    "trap": "fiery explosion",
+    "floor": "gray stone bricks"
+  }
+}

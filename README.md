@@ -355,7 +355,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-VR-Bench builds upon various open-source projects and research in visual reasoning and VLM evaluation.
+Thanks to [AutoEnv](https://github.com/FoundationAgents/AutoEnv), [Game-RL](https://github.com/tongjingqi/Game-RL), [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), and [MiniVeo3-Reasoner](https://github.com/thuml/MiniVeo3-Reasoner) for providing basic support for this project!
 
 ## 📧 Contact
 

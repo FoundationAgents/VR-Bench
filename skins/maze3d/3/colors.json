@@ -1,0 +1,8 @@
+{
+  "start_pos": "#00FF00",
+  "goal_pos": "#FF00FF",
+  "default_cube": "#CCCCCC",
+  "ball": "#00FFFF",
+  "ball_edge": "#0088FF"
+}
+

@@ -103,8 +103,6 @@ python run_skin_generation.py --maze-type sokoban --theme "industrial warehouse"
 python run_skin_generation.py --maze-type trapfield --theme "lava dungeon with fire"
 ```
 
-💡 See `config/maze_examples.yaml` for 20+ theme ideas.
-
 ## 🏗️ Architecture
 
 ### Pipeline (DAG)
@@ -149,8 +147,7 @@ AutoEnv/
 │           ├── prompt.py          # Prompt templates (12 lines)
 │           └── maze_assets_config.py  # Asset configs (200 lines)
 └── config/
-    ├── env_skin_gen.yaml          # Default config
-    └── maze_examples.yaml         # 20+ theme examples
+    └── env_skin_gen.yaml          # Default config
 
 Total: ~1650 lines of clean, focused code
 ```

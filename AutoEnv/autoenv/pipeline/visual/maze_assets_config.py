@@ -8,14 +8,15 @@ from typing import Any
 
 # ==================== Asset Prompt Templates ====================
 
-def get_asset_prompt_template(asset_type: str, theme: str) -> str:
+def get_asset_prompt_template(asset_type: str, theme: str, maze_type: str) -> str:
     """
-    根据资产类型和主题生成 prompt。
-    
+    根据资产类型、主题和迷宫类型生成 prompt。
+
     Args:
         asset_type: 资产类型（player, wall, floor, target, box, trap, start, end, road, goal）
         theme: 视觉主题（如 "cyberpunk neon city"）
-    
+        maze_type: 迷宫类型（maze, pathfinder, sokoban, trapfield）
+
     Returns:
         完整的图像生成 prompt
     """
@@ -32,22 +33,41 @@ def get_asset_prompt_template(asset_type: str, theme: str) -> str:
         "road": "pathway tile, traversable route",
         "goal": "objective marker, target destination",
     }
-    
+
     base_desc = base_descriptions.get(asset_type, asset_type)
-    
+
+    # 根据迷宫类型和资产类型添加形状约束
+    shape_constraint = ""
+    if maze_type == "maze":
+        if asset_type in ["floor", "wall"]:
+            shape_constraint = "\n- MUST be a perfect square tile with equal width and height"
+    elif maze_type == "pathfinder":
+        if asset_type == "road":
+            shape_constraint = "\n- MUST be a perfect square tile texture with equal width and height"
+    elif maze_type == "sokoban":
+        if asset_type in ["floor", "wall"]:
+            shape_constraint = "\n- MUST be a perfect square block with equal width and height"
+    elif maze_type == "trapfield":
+        if asset_type in ["floor", "trap"]:
+            shape_constraint = "\n- MUST be a perfect square tile with equal width and height"
+
     # 构建完整 prompt
     prompt = f"""A {base_desc} in {theme} style.
 Art requirements:
 - Top-down 2D game asset
-- Square tile format (suitable for grid-based game)
+- Square tile format (suitable for grid-based game){shape_constraint}
+- Retro pixel art style with moderate pixel granularity (16x16 to 32x32 pixel level)
+- Include texture details and depth layers - NOT overly simplified
+- Clear, defined edges and outlines with visible pixel borders
+- Vintage game aesthetic with appropriate level of detail
 - Clean, recognizable silhouette
 - Centered in frame, filling 70-85% of canvas
 - Solid white background
 - NO glow effects, NO bloom, NO shadows extending beyond tile
-- Sharp, clean edges suitable for pixel-perfect rendering
+- Sharp, pixel-perfect edges with clear separation lines
 - Consistent art style with other game assets
 - Game-ready quality"""
-    
+
     return prompt
 
 
@@ -261,7 +281,7 @@ def generate_strategy_for_maze(maze_type: str, theme: str) -> dict[str, Any]:
     assets = []
     for asset_def in config["assets"]:
         asset_id = asset_def["id"]
-        prompt = get_asset_prompt_template(asset_id, theme)
+        prompt = get_asset_prompt_template(asset_id, theme, maze_type)
 
         asset_entry = {
             "id": asset_id,

@@ -3,7 +3,7 @@ image_model: "gemini-2.5-flash-image"
 
 # Maze mode configuration
 maze_type: "maze"
-theme: "cyberpunk neon city with glowing walls"
+theme: "ancient stone with moss and cracks"
 
 # Output directory
 envs_root_path: "workspace/envs"

@@ -248,22 +248,6 @@ bash scripts/run_vlm_eval.sh
 - **MF (Mask Fidelity)**: Background stability score [0,1]; compares sampled frames to the first frame while masking start/goal/player regions.
 
 
-
-## 📁 Project Structure
-
-```
-VR-Bench/
-├── core/                   # Core framework
-├── games/                  # Game implementations
-├── generation/             # Dataset generation
-├── evaluation/
-│   ├── videomodel_eval/    # Evaluate video models’ trajectory reasoning
-│   └── vlm_eval/           # Evaluate VLMs’ planning / action reasoning
-├── config/                 # Generation & evaluation configs
-├── skins/                  # Texture assets
-└── scripts/                # Utility scripts
-```
-
 ## 🔧 Configuration
 
 ### Generation Config (`config/config.yaml`)

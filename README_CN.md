@@ -240,21 +240,6 @@ bash scripts/run_vlm_eval.sh
 
 脚本将基于您训练的模型生成视频，并保存到指定输出目录。
 
-## 📁 项目结构
-
-```
-VR-Bench/
-├── core/                   # 核心框架
-├── games/                  # 游戏实现
-├── generation/             # 数据生成
-├── evaluation/
-│  ├── videomodel_eval/     # 评估视频模型的轨迹推理
-│  └── vlm_eval/            # 评估 VLM 的规划/动作推理
-├── config/                 # 生成与评估配置
-├── skins/                  # 纹理资源
-└── scripts/                # 实用脚本
-```
-
 ## 🔧 配置
 
 ### 生成配置（`config/config.yaml`）

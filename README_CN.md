@@ -1,6 +1,6 @@
 <div align="center">
 
-# VR-Bench：视觉语言模型的视觉推理基准
+# VR-Bench：视觉模型的推理基准
 
 </div>
 

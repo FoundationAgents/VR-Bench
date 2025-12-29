@@ -1,6 +1,6 @@
 <div align="center">
 
-# VR-Bench: Visual Reasoning Benchmark for Vision-Language Models
+# VR-Bench: The First Evaluation of Video Models' Reasoning Abilities through Maze-Solving Tasks
 
 </div>
 

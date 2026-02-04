@@ -14,21 +14,21 @@
 
 </div>
 
-[中文文档](README_CN.md) | English
-
-VR-Bench is a comprehensive benchmark for evaluating Vision-Language Models (VLMs) on spatial reasoning and planning tasks through various puzzle games. It provides a unified framework for dataset generation, evaluation, and analysis.
+VR-Bench is a comprehensive benchmark for evaluating Video Models and VLMs on spatial reasoning and planning tasks through various puzzle games. It provides a unified framework for dataset generation, evaluation, and analysis.
 
 > If you encounter any difficulties in using or reproducing the code, please contact me directly (Email: iamyangcheng7@gmail.com, Wechat: Forever_1k). The parameter settings during the evaluation process and the selection of crackers will affect the evaluation results.
+> 
+> **📝 Note on Paper Reproduction**: The results in our paper were obtained using **CSRT tracker**. If you want to exactly reproduce the paper results, use `--tracker-type csrt`. However, we recommend **NCC tracker** for general use as it provides more stable and accurate trajectory extraction in puzzle game scenarios.
 
 ![](https://raw.githubusercontent.com/ImYangC7/Repo-recorder/main/generated/FoundationAgents__VR-Bench_status.svg)
 
 ## 🎊 News
+- [2026.2.4] We have open-sourced all baseline output videos to facilitate reproducing the baselines and experimenting with different evaluation infrastructures, and have uploaded them to [Hugging Face](https://huggingface.co/datasets/amagipeng/VR-Bench).
 - [2026.1.4] Refactored the game adapter interface to unify the solution video generation process, see [PR #14](https://github.com/FoundationAgents/VR-Bench/pull/14). We have also uploaded Wan-R1 5B trained on all mazes to [Hugging Face](https://huggingface.co/HY-Wan/Wan-R1).
 - [2025.12.14] 🎨 **Released AutoEnv-SkinGen**: AI-powered skin generation pipeline for maze-type games! Generate unlimited themed skins with automatic visual descriptions. See [AutoEnv Documentation](AutoEnv/README.md).
 - [2025.12.11] We have added dynamic prompt templates for video models, as well as the `metadata.csv` generator script `generate_metadata.py` in the prompts folder. Please refer to [PR #10](https://github.com/FoundationAgents/VR-Bench/pull/10).
 - [2025.12.10] We have added a dynamic prompt template for VLM that supports adaptation to different skins. Please refer to [PR #9](https://github.com/FoundationAgents/VR-Bench/pull/9).
 - [2025.12.03] Refactored tracker code for improved standardization and added comprehensive tracker documentation (NCC, Optical Flow, CSRT) with usage examples.
-> **📝 Note on Paper Reproduction**: The results in our paper were obtained using **CSRT tracker**. If you want to exactly reproduce the paper results, use `--tracker-type csrt`. However, we recommend **NCC tracker** for general use as it provides more stable and accurate trajectory extraction in puzzle game scenarios.
 - [2025.11.26] We apologize for the earlier omission. We have now added all our current maze textures to the skin folder to enable normal generation. In future releases, we will use nanobanana to support automatic skin generation. Please follow our updates.
 - [2025.11.24] We have released the training scripts and corresponding configurations used to train Wan-R1.
 - [2025.11.19] We have released evaluation code for all tasks.
@@ -53,15 +53,6 @@ VR-Bench includes five different puzzle games, each testing different aspects of
 - **PathFinder (Irregular Maze)**: Navigate through irregular mazes with curved paths, testing pure visual perception without coordinate memory
 - **TrapField**: Navigate from start to goal while avoiding specific trap regions, testing constraint-based reasoning
 
-## ✨ Key Features
-
-- **Procedural Generation**: Automatically generate diverse puzzle levels with configurable difficulty
-- **Texture Customization**: Support for custom visual themes through texture skins
-- **Video Rendering**: Generate solution videos with smooth animations (24 FPS)
-- **VLM Evaluation**: Built-in framework for testing various VLMs (GPT, Gemini, Qwen, etc.)
-- **Comprehensive Metrics**: SR (Success Rate), PR (Precision Rate), SD (Step Deviation), EM (Exact Match), MF (Mask Fidelity)
-- **Parallel Processing**: Multi-threaded generation and evaluation for efficiency
-- **Deduplication**: Automatic detection and removal of duplicate levels
 
 ## 📋 Requirements
 
@@ -351,23 +342,18 @@ If you use VR-Bench in your research, please cite:
 }
 ```
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. 
-
-## 🔗 Related Resources
-
-- [Hugging Face Dataset](https://huggingface.co/datasets/amagipeng/VR-Bench)
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
 Thanks to [AutoEnv](https://github.com/FoundationAgents/AutoEnv), [Game-RL](https://github.com/tongjingqi/Game-RL), [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), and [MiniVeo3-Reasoner](https://github.com/thuml/MiniVeo3-Reasoner) for providing basic support for this project!
 
-## 📧 Contact
+## 🤝 Contributing
 
-For questions and feedback, please open an issue on GitHub or contact the maintainers.
+Contributions are welcome! Please feel free to submit a Pull Request. 
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+
 

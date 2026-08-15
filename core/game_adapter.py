@@ -109,11 +109,29 @@ class GameAdapter(ABC):
     def get_required_texture_files(self) -> list:
         """
         返回游戏需要的纹理文件列表
-        
+
         Returns:
             纹理文件名列表（不含扩展名）
         """
         return []
+
+    def validate_skin_folder(self, skin_folder: Path) -> bool:
+        """
+        验证皮肤文件夹是否有效
+
+        默认实现：检查 get_required_texture_files() 列出的纹理是否齐全。
+        不使用纹理图片的游戏（如 3D Maze 使用 colors.json）应覆盖此方法。
+
+        Args:
+            skin_folder: 皮肤文件夹路径
+
+        Returns:
+            True 如果皮肤有效，False 如果无效
+        """
+        return all(
+            any((skin_folder / f"{name}{ext}").exists() for ext in ['.png', '.jpg', '.jpeg'])
+            for name in self.get_required_texture_files()
+        )
     
     @abstractmethod
     def generate_video(

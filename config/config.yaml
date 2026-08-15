@@ -5,7 +5,7 @@
 game_type: "sokoban"
 
 # 皮肤文件夹根目录
-skins_root: "skins/sokoban/new"
+skins_root: "skins/sokoban"
 
 # 输出根目录
 output_root: "generated_levels"

@@ -76,7 +76,7 @@ python test_dynamic_metadata.py --games maze --skins 1 2 --merge
 ```
 
 ### `--dataset-root`
-Specify dataset root directory (default: project_root/downloaded_dataset)
+Specify dataset root directory (default: project_root/dataset_VR)
 
 ```bash
 python test_dynamic_metadata.py --dataset-root /path/to/dataset

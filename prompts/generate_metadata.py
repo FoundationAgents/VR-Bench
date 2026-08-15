@@ -13,7 +13,8 @@ from typing import List, Optional
 
 from . import get_dynamic_prompt, GAME_ALIASES
 
-DATASET_ROOT = "downloaded_dataset"
+# 与 dataset_init.py 的 --output-dir 默认值保持一致
+DATASET_ROOT = "dataset_VR"
 
 # skins 目录相对于此文件的路径
 SKINS_ROOT = Path(__file__).parent.parent / "skins"

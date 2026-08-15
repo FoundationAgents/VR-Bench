@@ -6,7 +6,7 @@
 import sys
 import logging
 from pathlib import Path
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool, cpu_count, current_process
 from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -88,7 +88,7 @@ def process_single_state(
     """处理单个state文件，生成所有最优路径的视频"""
     from generation.path_finder import find_optimal_paths
     
-    stats = {'total_paths': 0, 'success': 0, 'failed': 0, 'skipped': 0}
+    stats = {'total_paths': 0, 'success': 0, 'failed': 0, 'skipped': 0, 'errors': []}
 
     try:
         state = UnifiedState.load(str(state_path))
@@ -116,8 +116,13 @@ def process_single_state(
         # 对于多条路径的情况，可以扩展adapter接口支持指定路径
         tasks = [(state_path, game_type, 0, str(videos_dir / f"{base_name}_0.mp4"), skip_existing, assets_folder)]
 
-        with Pool(processes=min(num_workers, len(tasks))) as pool:
-            results = pool.map(process_single_path, tasks)
+        # daemon进程（外层Pool的worker）不允许再创建子进程，嵌套Pool会抛
+        # AssertionError；单任务时开Pool也只是纯开销，直接串行执行
+        if len(tasks) > 1 and not current_process().daemon:
+            with Pool(processes=min(num_workers, len(tasks))) as pool:
+                results = pool.map(process_single_path, tasks)
+        else:
+            results = [process_single_path(task) for task in tasks]
 
         first_video = videos_dir / f"{base_name}_0.mp4"
         if first_video.exists():
@@ -130,10 +135,12 @@ def process_single_state(
                 stats['skipped'] += 1
             else:
                 stats['failed'] += 1
+                stats['errors'].append(f"{base_name}_{path_id}: {error_msg}")
                 if verbose:
                     logging.error(f"  ❌ {base_name}_{path_id}: {error_msg}")
 
     except Exception as e:
+        stats['errors'].append(f"{state_path.name}: {e}")
         if verbose:
             logging.error(f"❌ {state_path.name}: {e}")
 
@@ -192,6 +199,8 @@ def batch_process_dataset(
         logging.info(f"{game_type.upper()}: {len(state_paths)} files")
         logging.info(f"{'='*60}\n")
 
+        sorted_paths = sorted(state_paths)
+
         if parallel_states > 1:
             process_func = partial(
                 process_single_state,
@@ -202,18 +211,21 @@ def batch_process_dataset(
                 assets_folder=assets_folder
             )
             with Pool(processes=parallel_states) as pool:
-                results = pool.map(process_func, sorted(state_paths))
+                results = pool.map(process_func, sorted_paths)
 
-            for i, stats in enumerate(results):
-                for k in total_stats:
-                    total_stats[k] += stats.get(k.replace('total_states', 'total_paths') if k == 'total_states' else k, 0)
+            for state_path, stats in zip(sorted_paths, results):
                 total_stats['total_states'] += 1
+                for k in ['total_paths', 'success', 'failed', 'skipped']:
+                    total_stats[k] += stats[k]
                 if verbose:
-                    s = stats
-                    logging.info(f"✅ {sorted(state_paths)[i].name}: {s['total_paths']}路径 "
-                               f"{s['success']}成功 {s['skipped']}跳过 {s['failed']}失败")
+                    # worker里verbose=False，错误信息通过stats['errors']带回来
+                    marker = '✅' if stats['success'] and not stats['failed'] else '⚠️'
+                    logging.info(f"{marker} {state_path.name}: {stats['total_paths']}路径 "
+                               f"{stats['success']}成功 {stats['skipped']}跳过 {stats['failed']}失败")
+                for err in stats['errors']:
+                    logging.error(f"  ❌ {err}")
         else:
-            for state_path in sorted(state_paths):
+            for state_path in sorted_paths:
                 if verbose:
                     logging.info(f"📄 {state_path.relative_to(dataset_path)}")
                 stats = process_single_state(state_path, game_type, skip_existing, verbose, num_workers, assets_folder)

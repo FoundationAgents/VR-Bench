@@ -57,9 +57,12 @@ def download_and_extract(
         token=token
     )
     
+    # 两个 tar 包的成员都是 {game}/{skin}/{difficulty}/...，解到同一层会把
+    # train/eval 混在一起；必须各自解到 {split}/ 子目录下，
+    # 下游（prompts.generate_metadata）按 {root}/{split}/{game}/... 读取
     logging.info("解压 train.tar.gz...")
     with tarfile.open(train_file, 'r:gz') as tar:
-        tar.extractall(output_path)
+        tar.extractall(output_path / "train")
     logging.info("✓ train 解压完成")
     
     # 下载 eval.tar.gz
@@ -73,7 +76,7 @@ def download_and_extract(
     
     logging.info("解压 eval.tar.gz...")
     with tarfile.open(eval_file, 'r:gz') as tar:
-        tar.extractall(output_path)
+        tar.extractall(output_path / "eval")
     logging.info("✓ eval 解压完成")
     
     # 下载 README

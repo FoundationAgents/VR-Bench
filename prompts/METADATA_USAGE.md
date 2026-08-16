@@ -14,13 +14,13 @@ Generate metadata.csv files for VR-Bench dataset with dynamic prompts based on s
 
 ```bash
 # Generate all metadata files
-python test_dynamic_metadata.py
+python -m prompts.generate_metadata
 
 # Generate for specific game type
-python test_dynamic_metadata.py --games maze
+python -m prompts.generate_metadata --games maze
 
 # Generate for specific skins and difficulties
-python test_dynamic_metadata.py --games maze --skins 1 2 --difficulties easy
+python -m prompts.generate_metadata --games maze --skins 1 2 --difficulties easy
 ```
 
 ## Command-Line Arguments
@@ -31,7 +31,7 @@ Select game types (multiple allowed)
 **Options:** `maze`, `irregular_maze`, `maze3d`, `sokoban`, `trapfield`
 
 ```bash
-python test_dynamic_metadata.py --games maze sokoban
+python -m prompts.generate_metadata --games maze sokoban
 ```
 
 ### `--skins`
@@ -47,7 +47,7 @@ Select skin IDs (multiple allowed)
 - trapfield: 4 skins
 
 ```bash
-python test_dynamic_metadata.py --skins 1 2 3
+python -m prompts.generate_metadata --skins 1 2 3
 ```
 
 ### `--difficulties`
@@ -56,7 +56,7 @@ Select difficulty levels (multiple allowed)
 **Options:** `easy`, `medium`, `hard`
 
 ```bash
-python test_dynamic_metadata.py --difficulties easy hard
+python -m prompts.generate_metadata --difficulties easy hard
 ```
 
 ### `--splits`
@@ -65,65 +65,65 @@ Select dataset splits (default: train eval)
 **Options:** `train`, `eval`
 
 ```bash
-python test_dynamic_metadata.py --splits train
+python -m prompts.generate_metadata --splits train
 ```
 
 ### `--merge`
 Merge all matching data into a single metadata.csv
 
 ```bash
-python test_dynamic_metadata.py --games maze --skins 1 2 --merge
+python -m prompts.generate_metadata --games maze --skins 1 2 --merge
 ```
 
 ### `--dataset-root`
-Specify dataset root directory (default: project_root/downloaded_dataset)
+Specify dataset root directory (default: project_root/dataset_VR)
 
 ```bash
-python test_dynamic_metadata.py --dataset-root /path/to/dataset
+python -m prompts.generate_metadata --dataset-root /path/to/dataset
 ```
 
 ### `--skins-root`
 Specify skins configuration directory (default: project_root/skins)
 
 ```bash
-python test_dynamic_metadata.py --skins-root /path/to/skins
+python -m prompts.generate_metadata --skins-root /path/to/skins
 ```
 
 ## Usage Examples
 
 ### Generate all data
 ```bash
-python test_dynamic_metadata.py
+python -m prompts.generate_metadata
 ```
 **Output:** 132 metadata.csv files (66 train + 66 eval)
 
 ### Generate specific game
 ```bash
-python test_dynamic_metadata.py --games maze
+python -m prompts.generate_metadata --games maze
 ```
 **Output:** 30 files (5 skins × 3 difficulties × 2 splits)
 
 ### Generate specific combination
 ```bash
-python test_dynamic_metadata.py --games maze --skins 1 --difficulties easy
+python -m prompts.generate_metadata --games maze --skins 1 --difficulties easy
 ```
 **Output:** 2 files (train/maze_1_easy and eval/maze_1_easy)
 
 ### Merge multiple games
 ```bash
-python test_dynamic_metadata.py --games maze irregular_maze --merge
+python -m prompts.generate_metadata --games maze irregular_maze --merge
 ```
 **Output:** 2 merged files (one for train, one for eval)
 
 ### Cross-skin training
 ```bash
-python test_dynamic_metadata.py --games maze --skins 1 2 3 --merge --splits train
+python -m prompts.generate_metadata --games maze --skins 1 2 3 --merge --splits train
 ```
 **Output:** 1 merged file containing all train data for maze skins 1, 2, 3
 
 ### Regenerate specific skins
 ```bash
-python test_dynamic_metadata.py --games irregular_maze --skins 1 2 3
+python -m prompts.generate_metadata --games irregular_maze --skins 1 2 3
 ```
 **Output:** 18 files (3 skins × 3 difficulties × 2 splits)
 
@@ -131,7 +131,7 @@ python test_dynamic_metadata.py --games irregular_maze --skins 1 2 3
 
 ### Separate Mode (default)
 ```
-downloaded_dataset/
+dataset_VR/
 └── metadata/
     ├── train/
     │   ├── maze_1_easy/
@@ -147,7 +147,7 @@ downloaded_dataset/
 
 ### Merge Mode
 ```
-downloaded_dataset/
+dataset_VR/
 └── metadata/
     ├── train/
     │   └── maze_sokoban_1_2_easy/
@@ -163,9 +163,9 @@ Each CSV file contains 3 columns:
 
 | Column | Description | Example |
 |--------|-------------|---------|
-| `video` | Video file path (relative to downloaded_dataset/) | `train/maze/1/easy/videos/easy_0001_0.mp4` |
+| `video` | Video file path (relative to dataset_VR/) | `train/maze/1/easy/videos/easy_0001_0.mp4` |
 | `prompt` | Dynamically generated prompt | `Create a 2D animation...` |
-| `input_image` | Input image path (relative to downloaded_dataset/) | `train/maze/1/easy/images/easy_0001.png` |
+| `input_image` | Input image path (relative to dataset_VR/) | `train/maze/1/easy/images/easy_0001.png` |
 
 ## Dynamic Prompt System
 
@@ -194,7 +194,7 @@ Different skins produce different prompts automatically.
 
 ## Notes
 
-- All paths in metadata.csv are relative to `downloaded_dataset/` directory
+- All paths in metadata.csv are relative to `dataset_VR/` directory
 - Game type `irregular_maze` maps to `pathfinder` skin directory
 - If skin description is not found, a warning is displayed and the combination is skipped
 - Use `--merge` mode for training across multiple skins or game types

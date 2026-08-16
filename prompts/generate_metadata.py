@@ -13,7 +13,8 @@ from typing import List, Optional
 
 from . import get_dynamic_prompt, GAME_ALIASES
 
-DATASET_ROOT = "downloaded_dataset"
+# 与 dataset_init.py 的 --output-dir 默认值保持一致
+DATASET_ROOT = "dataset_VR"
 
 # skins 目录相对于此文件的路径
 SKINS_ROOT = Path(__file__).parent.parent / "skins"
@@ -216,28 +217,28 @@ def parse_args():
 示例用法:
 
 1. 生成所有数据（默认）:
-   python generate_metadata.py
+   python -m prompts.generate_metadata
 
 2. 只生成 maze 和 maze3d 的数据:
-   python generate_metadata.py --games maze maze3d
+   python -m prompts.generate_metadata --games maze maze3d
 
 3. 只生成皮肤 1 和 2 的数据:
-   python generate_metadata.py --skins 1 2
+   python -m prompts.generate_metadata --skins 1 2
 
 4. 只生成 easy 和 medium 难度:
-   python generate_metadata.py --difficulties easy medium
+   python -m prompts.generate_metadata --difficulties easy medium
 
 5. 组合条件（maze 游戏，皮肤 1，easy 难度）:
-   python generate_metadata.py --games maze --skins 1 --difficulties easy
+   python -m prompts.generate_metadata --games maze --skins 1 --difficulties easy
 
 6. 合并模式（将所有符合条件的数据合并到一个 metadata.csv）:
-   python generate_metadata.py --games maze sokoban --merge
+   python -m prompts.generate_metadata --games maze sokoban --merge
 
 7. 只处理 train 数据集:
-   python generate_metadata.py --splits train
+   python -m prompts.generate_metadata --splits train
 
 8. 复杂组合（多游戏、多皮肤、多难度，合并）:
-   python generate_metadata.py --games maze irregular_maze --skins 1 2 3 --difficulties easy hard --merge
+   python -m prompts.generate_metadata --games maze irregular_maze --skins 1 2 3 --difficulties easy hard --merge
         """
     )
 

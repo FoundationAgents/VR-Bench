@@ -62,16 +62,12 @@ def find_skin_folders(skins_root: Path, adapter: GameAdapter) -> List[Path]:
         return []
 
     skin_folders = []
-    required_files = adapter.get_required_texture_files()
 
     for item in skins_root.iterdir():
-        if item.is_dir():
-            has_all = all(
-                any((item / f"{name}{ext}").exists() for ext in ['.png', '.jpg', '.jpeg'])
-                for name in required_files
-            )
-            if has_all:
-                skin_folders.append(item)
+        # 由适配器判断皮肤是否有效：默认检查纹理文件，
+        # 3D Maze 等不用纹理的游戏在自己的 adapter 里覆盖为检查 colors.json
+        if item.is_dir() and adapter.validate_skin_folder(item):
+            skin_folders.append(item)
 
     return skin_folders
 
@@ -248,9 +244,9 @@ def main(config_path: str = "config.yaml"):
         return
 
     # 检查是否需要皮肤
-    required_textures = adapter.get_required_texture_files()
-
-    if required_textures and skins_root_str:
+    # 注意：不能只看 get_required_texture_files()，3D Maze 返回空列表但仍然
+    # 需要皮肤目录（从中读取 colors.json），只要配置了 skins_root 就走皮肤流程
+    if skins_root_str:
         # 需要皮肤的游戏
         skins_root = Path(skins_root_str)
         skin_folders = find_skin_folders(skins_root, adapter)

@@ -226,7 +226,7 @@ bash scripts/start_sglang_server.sh
 3) Run VLM evaluation on the dataset results:
 
 ```bash
-bash scripts/run_vlm_eval.sh
+bash scripts/vlm_evaluate.sh
 ```
 
 

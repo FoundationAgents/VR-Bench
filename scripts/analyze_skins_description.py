@@ -3,8 +3,8 @@
 使用 VLM 自动识别皮肤图片内容，生成 description.json 文件。
 
 用法:
-    python scripts/analyze_skins.py --skins-root skins --model gemini-2.5-flash-image
-    python scripts/analyze_skins.py --skins-root skins --game maze --skin-id 1
+    python scripts/analyze_skins_description.py --skins-root skins --model gemini-2.5-flash-image
+    python scripts/analyze_skins_description.py --skins-root skins --game maze --skin-id 1
 """
 
 import argparse
